@@ -132,12 +132,16 @@
   </div>
 
   <script>
-    // unmute audio saat page load
+    let musicStarted = false;
+
+    // coba autoplay saat load
     window.addEventListener("load", () => {
       const audio = document.getElementById("backsound");
       audio.muted = false;
-      audio.play().catch(() => {
-        console.log("Autoplay diblokir, musik mulai saat klik Next");
+      audio.play().then(() => {
+        musicStarted = true;
+      }).catch(() => {
+        console.log("Autoplay diblokir, musik akan nyala pas klik Next");
       });
     });
 
@@ -166,6 +170,14 @@
     let index = 0;
 
     function nextMessage() {
+      // fallback: kalau musik belum jalan, start di sini
+      if (!musicStarted) {
+        const audio = document.getElementById("backsound");
+        audio.muted = false;
+        audio.play();
+        musicStarted = true;
+      }
+
       index++;
       if (index < messages.length) {
         document.getElementById("message").innerText = messages[index];
@@ -196,7 +208,7 @@
 
     function sendToWhatsApp() {
       const phone = "62895329548065"; // ganti dengan nomor pasanganmu
-      const text = encodeURIComponent("Happy Anniversary yah sayang❤️");
+      const text = encodeURIComponent("Happy Anniversary yah sayang");
       window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
     }
   </script>
