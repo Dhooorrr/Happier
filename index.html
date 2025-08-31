@@ -5,6 +5,7 @@
   <title>Happy Anniversary</title>
   <style>
     body { margin:0; background:#111; font-family: 'Segoe UI', sans-serif; }
+
     .overlay {
       position: fixed;
       top: 0; left: 0;
@@ -18,16 +19,17 @@
     .popup {
       background: #000;
       color: #fff;
-      padding: 30px;
+      padding: 20px;
       border-radius: 16px;
       box-shadow: 0 4px 20px rgba(255,215,0,0.4);
       max-width: 380px;
+      width: 90%;              /* fleksibel di HP */
       text-align: center;
       animation: fadeIn 0.6s ease;
       position: relative;
     }
     .popup h2 {
-      font-size: 1.2em;
+      font-size: 1.3em;
       color: gold;
       margin-bottom: 15px;
       animation: glow 2s infinite alternate;
@@ -48,6 +50,8 @@
     }
     .popup button:hover { filter: brightness(1.1); }
     .popup button:active { transform: scale(0.95); }
+
+    /* tombol WA khusus */
     .wa-btn {
       background: #25D366;
       color: #fff;
@@ -57,15 +61,29 @@
       gap: 8px;
       font-size: 1em;
       font-weight: bold;
-      padding: 12px 26px;
+      padding: 12px 24px;
       border-radius: 50px;
       border: none;
       cursor: pointer;
       transition: all 0.2s ease;
     }
-    .wa-btn img { width: 22px; height: 22px; }
+    .wa-btn img {
+      width: 22px; height: 22px;
+    }
     .wa-btn:hover { filter: brightness(1.1); }
     .wa-btn:active { transform: scale(0.95); }
+
+    /* responsive untuk HP */
+    @media (max-width: 480px) {
+      .popup { max-width: 95%; padding: 18px; }
+      .popup h2 { font-size: 1.1em; }
+      .popup button, .wa-btn {
+        font-size: 0.9em;
+        padding: 10px 18px;
+      }
+      .wa-btn img { width: 18px; height: 18px; }
+    }
+
     @keyframes fadeIn {
       from {opacity: 0; transform: scale(0.7);}
       to {opacity: 1; transform: scale(1);}
@@ -90,8 +108,9 @@
   </style>
 </head>
 <body>
-  <!-- autoplay + muted (supaya browser izinkan) -->
-  <audio id="backsound" src="Iframe Jaz - Bersamamu (Official Lyric Video) [D-VytLhH-KE].mp3" autoplay loop muted></audio>
+  <!-- autoplay + muted biar bisa jalan -->
+  <audio id="backsound" src="lagu.mp3" autoplay loop muted></audio>
+  <!-- ganti 'lagu.mp3' dengan file musik kamu -->
 
   <div id="overlay" class="overlay">
     <div class="popup">
@@ -101,12 +120,12 @@
   </div>
 
   <script>
-    // langsung unmute & play saat page load
+    // coba unmute audio saat page load
     window.addEventListener("load", () => {
       const audio = document.getElementById("backsound");
       audio.muted = false;
-      audio.play().catch(e => {
-        console.log("Autoplay mungkin diblokir browser. Akan jalan saat klik Next.");
+      audio.play().catch(() => {
+        console.log("Autoplay diblokir, musik mulai saat klik Next");
       });
     });
 
@@ -119,7 +138,7 @@
       "Udah selalu pengertian 🤗💖",
       "Walaupun suka bawel, suka ngeselin, nyebelin juga 😜🙄🤣",
       "Tapi tetep sayang kannn wkwkwk 😆❤️",
-      "Happy Anniversary yang ke-1 yah sayang🎉💐",
+      "Happy Anniversary yang ke-1 yah sayang 🎉💐",
       "Semoga bareng terus sampe tahun depan, tahun depannya lagi, dan seterusnya 🤗🤗💞",
       "Tetap jaga komunikasi kita 📞💬",
       "Jauh dekatnya jarak kita bukan masalah 🌍✈️",
