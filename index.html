@@ -1,17 +1,182 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Ucapan Ulang Tahun</title>
-  <script>
-    function ucapanUlangTahun() {
-      // Alert pertama
-      alert("Selamat Ulang Tahun! 🎉 Semoga panjang umur, sehat selalu, dan sukses selalu!");
+  <meta charset="UTF-8">
+  <title>Happy Anniversary</title>
+  <style>
+    body { margin:0; background:#111; font-family: 'Segoe UI', sans-serif; }
 
-      // Setelah alert pertama ditutup, langsung muncul alert kedua
-      alert("Semoga semua harapanmu di tahun ini tercapai! 🎂✨");
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .popup {
+      background: #000;
+      color: #fff;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(255,215,0,0.4);
+      max-width: 380px;
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+      position: relative;
+    }
+    .popup h2 {
+      font-size: 1.2em;
+      color: gold;
+      margin-bottom: 15px;
+      animation: glow 2s infinite alternate;
+      white-space: pre-line;
+    }
+    .popup button {
+      margin-top: 15px;
+      padding: 12px 26px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, gold, pink);
+      color: #000;
+      font-size: 1em;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.15s ease;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    }
+    .popup button:hover { filter: brightness(1.1); }
+    .popup button:active { transform: scale(0.95); }
+
+    /* tombol WA khusus */
+    .wa-btn {
+  background: #25D366;
+  color: #fff;
+  display: inline-flex;        /* biar konten di dalam button sejajar */
+  align-items: center;         /* vertikal tengah */
+  justify-content: center;     /* horizontal tengah */
+  gap: 8px;                    /* jarak logo & teks */
+  font-size: 1em;
+  font-weight: bold;
+  padding: 12px 26px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.wa-btn img {
+  width: 22px;
+  height: 22px;
+}
+.wa-btn:hover {
+  filter: brightness(1.1);
+}
+.wa-btn:active {
+  transform: scale(0.95);
+}
+
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: scale(0.7);}
+      to {opacity: 1; transform: scale(1);}
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 5px gold; }
+      to   { text-shadow: 0 0 20px gold; }
+    }
+    .confetti {
+      position: fixed;
+      width: 10px; height: 10px;
+      background: gold;
+      top: -10px;
+      border-radius: 50%;
+      opacity: 0.8;
+      z-index: 2000;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      to { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <audio id="backsound" src="Iframe Jaz - Bersamamu (Official Lyric Video) [D-VytLhH-KE].mp3" loop></audio>
+
+  <div id="overlay" class="overlay">
+    <div class="popup">
+      <h2 id="message">Haii sayangg 💕🥰</h2>
+      <button id="nextBtn" onclick="nextMessage()">Next ❤️</button>
+    </div>
+  </div>
+
+  <script>
+    const messages = [
+      "Haii sayangg 💕🥰",
+      "Gak terasa yaa ✨",
+      "Udah cukup lama kita bareng 👫❤️",
+      "Hari-hariku terasa cepat apalagi kalau lagi sama kamu ⏰😍",
+      "Makasih ya sayang udah mau sama aku 🙏😘",
+      "Udah selalu pengertian 🤗💖",
+      "Walaupun suka bawel, suka ngeselin, nyebelin juga 😜🙄🤣",
+      "Tapi tetep sayang kannn wkwkwk 😆❤️",
+      "Happy Anniversary yang ke-1 yah sayang🎉💐",
+      "Semoga bareng terus sampe tahun depan, tahun depannya lagi, dan seterusnya 🤗🤗💞",
+      "Tetap jaga komunikasi kita 📞💬",
+      "Jauh dekatnya jarak kita bukan masalah 🌍✈️",
+      "Harus saling terbuka satu sama lain yaa biar gaada salah paham 🤝💡",
+      "Maafin aku ya kalo banyak salahnya 🙏, aku janji buat always memperbaiki 💖"
+    ];
+
+    const buttonTexts = [
+      "Next ❤️","Lanjut 💕","Terus 👉","Next 🌹","Lanjut 😘","Next 💖","Terus ✨",
+      "Next 🌸","Lanjut 💞","Terus ❤️","Next 💐","Lanjut 🌟","Hampir selesai 💌","Akhirnya 💖"
+    ];
+
+    let index = 0;
+    let musicStarted = false;
+
+    function nextMessage() {
+      if (!musicStarted) {
+        document.getElementById("backsound").play().catch(e=>{});
+        musicStarted = true;
+      }
+
+      index++;
+      if (index < messages.length) {
+        document.getElementById("message").innerText = messages[index];
+        document.getElementById("nextBtn").innerText = buttonTexts[index];
+      } else {
+        spawnConfetti();
+        // Popup terakhir dengan tombol WA
+        document.querySelector(".popup").innerHTML = `
+          <h2>🎉 Happy Anniversary 🎉\n\nI Love You in every universe 💕</h2>
+          <button class="wa-btn" onclick="sendToWhatsApp()">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp">
+            WhatsApp
+          </button>
+        `;
+      }
+    }
+
+    function spawnConfetti() {
+      for (let i=0; i<120; i++) {
+        const conf = document.createElement("div");
+        conf.classList.add("confetti");
+        conf.style.left = Math.random() * 100 + "vw";
+        conf.style.background = Math.random() > 0.5 ? "gold" : "pink";
+        conf.style.animationDuration = (Math.random()*3+2)+"s";
+        document.body.appendChild(conf);
+        setTimeout(()=>conf.remove(),5000);
+      }
+    }
+
+    function sendToWhatsApp() {
+      const phone = "6285870371095"; // ganti dengan nomor pasanganmu
+      const text = encodeURIComponent("Happy Anniversary yah sayang❤️");
+      window.open(`https://wa.me/${phone}?text=${text}`, "_blank");
     }
   </script>
-</head>
-<body onload="ucapanUlangTahun()">
 </body>
 </html>
